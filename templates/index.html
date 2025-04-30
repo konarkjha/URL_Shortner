@@ -28,7 +28,7 @@
             .then(response => response.json())
             .then(data => {
                 const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `<p>Shortened URL: <a href="<span class="math-inline">\{data\.short\_url\}" target\="\_blank"\></span>{data.short_url}</a></p>`;
+                resultDiv.innerHTML = `<p>Shortened URL: <a href="${data.short_url}" target="_blank">${data.short_url}</a></p>`;
             })
             .catch(error => {
                 const resultDiv = document.getElementById('result');

@@ -1,12 +1,18 @@
-from fastapi import FastAPI, HTTPException, Request, Depends, Body
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, Request, Depends, HTTPException, Body
+from fastapi.responses import RedirectResponse, HTMLResponse
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from .database import get_db
 from .models import URLMapping
 from .utils import encode_id
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 url_cache = {}
+
+@app.get("/")
+async def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/shorten")
 async def shorten_url(request: Request, db: Session = Depends(get_db), long_url: str = Body(embed=True)):
