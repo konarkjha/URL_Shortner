@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Shortener</title>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    <form id="shortenForm">
+        <label for="long_url">Enter Long URL:</label><br>
+        <input type="url" id="long_url" name="long_url" size="50" required><br><br>
+        <button type="submit">Shorten URL</button>
+    </form>
+
+    <div id="result" style="margin-top: 20px;"></div>
+
+    <script>
+        document.getElementById('shortenForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const longUrl = document.getElementById('long_url').value;
+
+            fetch('/shorten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ long_url: longUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `<p>Shortened URL: <a href="<span class="math-inline">\{data\.short\_url\}" target\="\_blank"\></span>{data.short_url}</a></p>`;
+            })
+            .catch(error => {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
